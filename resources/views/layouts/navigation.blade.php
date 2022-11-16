@@ -96,11 +96,11 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a href="navbar-light.html" class="waves-effect waves-dark">
+                    <a href="{{route('events.index')}}" class="waves-effect waves-dark">
  <span class="pcoded-micon">
  <i class="feather icon-menu"></i>
  </span>
-                        <span class="pcoded-mtext">Navigation</span>
+                        <span  class="pcoded-mtext">Events</span>
                     </a>
                 </li>
                 <li class="pcoded-hasmenu">

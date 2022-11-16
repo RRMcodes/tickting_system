@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use DataTables;
+use Session;
 use Illuminate\Http\Request;
+
 
 class EventController extends Controller
 {
@@ -13,8 +17,18 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+
+        $events = Event::all();
+        return view('events.index')->with(compact('events'));
     }
+
+    public function getEventsJson(Request $request) {
+
+        $event = event::query();
+
+        return DataTables::of($event)->toJson();
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -23,7 +37,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('events.create');
     }
 
     /**
@@ -34,7 +48,19 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'type' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'details' => 'required',
+            'quantity' => 'required'
+        ]);
+        $event = $request->except(['_token']);
+//        dd($event);
+        Event::create($event);
+        Session::flash('message',config("message.messages.created"));
+        return redirect()->route('events.index');
+
     }
 
     /**
@@ -56,7 +82,8 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        //
+        $event = event::findOrFail($id);
+        return view('events.edit')->with(compact('event'));
     }
 
     /**
@@ -66,9 +93,13 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $event = event::find($request->id);
+        $data = $request->except(['_token']);
+        $event->update($data);
+        Session::flash('message',config("message.messages.updated"));
+        return redirect()->route('events.index');
     }
 
     /**
@@ -79,6 +110,11 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = event::findOrFail($id);
+        $event->delete();
+        return response()->json([
+            'success'=> true,
+            'message'=> config("message.messages.deleted"),
+        ]);
     }
 }

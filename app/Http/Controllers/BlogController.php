@@ -38,22 +38,28 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         $validated = $request->validate([
             'title' => 'bail|required',
-            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
             'description' => 'required',
             'text' => 'required',
 
         ]);
 
+//        $image_path = $request->file('image')->store('images', 'public');
+//
+//        $data = Image::create([
+//            'image' => $image_path,
+//
+//        ]);
+
         $imageName = time().'.'.$request->image_name->extension();
+//
+//        // Public Folder
+//        $request->image_name->move(public_path('images'), $imageName);
 
-        // Public Folder
-        $request->image_name->move(public_path('images'), $imageName);
-
-        // //Store in Storage Folder
-        // $request->image->storeAs('images', $imageName);
+         //Store in Storage Folder
+         $request->image_name->move('storage/images', $imageName);
 
         // // Store in S3
         // $request->image->storeAs('images', $imageName, 's3');
