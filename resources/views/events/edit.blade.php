@@ -96,6 +96,65 @@
                                                 @enderror
                                             </div>
 
+                                            {{-- ticket type --}}
+                                            <div class="row">
+                                                <div class="col-sm-12">
+
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Edit Ticket Types</h5>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <section class="task-panel tasks-widget">
+                                                                <div class="panel-body">
+                                                                    <ul id="_ticket_types_here">
+                                                                        <a class="btn btn-primary btn-add-task waves-effect waves-light m-t-10" href="#" id="_ticket_type_add"><i class="icofont icofont-plus"></i> Add Ticket type</a>
+
+                                                                        @foreach ($ticketTypes as $ticketType)
+                                                                        <li id="_ticket_type1">
+                                                                            <input type="hidden" name="ticket_type_id[]" value="{{$ticketType->id}}">
+
+                                                                            <a href="#" class="_delete_item" data-rem="#_ticket_type1">
+                                                                                <i class="icofont icofont-ui-delete delete_todo"></i>
+                                                                            </a>
+                                                                            <br>
+                                                                            <br>
+                                                                            <div class="form-group row">
+                                                                                <label class="col-sm-2 col-form-label">Ticket Name</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input type="text" class="form-control" name="ticket_type_name[]" value="{{$ticketType->name}}" placeholder="Text Input Validation">
+                                                                                    <span class="messages"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label class="col-sm-2 col-form-label">Ticket Price</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input type="number" class="form-control" name="ticket_type_price[]" value="{{$ticketType->price}}">
+                                                                                    <span class="messages"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label class="col-sm-2 col-form-label">Ticket Quantity</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <input type="text" class="form-control" name="ticket_type_quantity[]" value="{{$ticketType->quantity}}">
+                                                                                    <span class="messages"></span>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div>
+
+                                                                            </div>
+                                                                        </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
@@ -110,5 +169,53 @@
         </div>
 
     </div>
+
+    <script>
+        $(function (){
+            $(document).on('click','._delete_item',function (e){
+                e.preventDefault();
+                $($(this).data('rem')).remove();
+            });
+        });
+
+        $(function (){
+            $(document).on('click','#_ticket_type_add', function (e){
+                e.preventDefault();
+                var index = $('#_ticket_types_here').length + 1;
+                $('#_ticket_types_here').append(getOption(index));
+            });
+        });
+
+        function getOption(index){
+            var option = '<li id="_ticket_type'+index+'">' +
+                '<a href="#" class="_delete_item" data-rem="#_ticket_type'+index+'">' +
+                '<i class="icofont icofont-ui-delete delete_todo"></i></a><br><br>' +
+                '<div class="form-group row">' +
+                '<label class="col-sm-2 col-form-label">Ticket Name</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" name="ticket_type_name[]"  placeholder="Text Input Validation">' +
+                '<span class="messages"></span>' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<label class="col-sm-2 col-form-label">Ticket Price</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="number" class="form-control" name="ticket_type_price[]" >' +
+                '<span class="messages"></span>' +
+                '</div>' +
+                ' </div>' +
+                '<div class="form-group row">' +
+                '<label class="col-sm-2 col-form-label">Ticket Quantity</label>' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="form-control" name="ticket_type_quantity[]" >' +
+                '<span class="messages"></span>' +
+                '</div>' +
+                '</div>' +
+                '<div>' +
+                '</div></li>';
+            return option;
+        }
+
+    </script>
 
 @endsection

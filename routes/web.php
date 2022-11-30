@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\ItemController;
 use \App\HTTP\Controllers\BlogController;
 use \App\HTTP\Controllers\EventController;
+use \App\Http\Controllers\EventTypeController;
+use App\Http\Controllers\TicketTypeController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +51,34 @@ Route::any('/events/create',[EventController::class,'create'])->name('events.cre
 Route::post('/events/store',[EventController::class,'store'])->name('events.store');
 Route::any('/events/edit/{id}',[EventController::class,'edit'])->name('events.edit');
 Route::post('/events/update',[EventController::class,'update'])->name('events.update');
+
+
+Route::get('/eventTypes',[EventTypeController::class,'index'])->name('eventTypes.index');
+Route::get('/eventTypes/getEventTypesJson',[EventTypeController::class,'getEventTypesJson'])->name('eventTypes.getEventTypesJson');
+Route::any('/eventTypes/delete/{id}',[EventTypeController::class,'destroy'])->name('eventTypes.delete');
+Route::any('/eventTypes/create',[EventTypeController::class,'create'])->name('eventTypes.create');
+Route::post('/eventTypes/store',[EventTypeController::class,'store'])->name('eventTypes.store');
+Route::any('/eventTypes/edit/{id}',[EventTypeController::class,'edit'])->name('eventTypes.edit');
+Route::post('/eventTypes/update',[EventTypeController::class,'update'])->name('eventTypes.update');
+
+
+Route::get('/ticketTypes',[ticketTypeController::class,'index'])->name('ticketTypes.index');
+Route::get('/ticketTypes/getTicketTypesJson',[ticketTypeController::class,'getTicketTypesJson'])->name('ticketTypes.getTicketTypesJson');
+Route::any('/ticketTypes/delete/{id}',[ticketTypeController::class,'destroy'])->name('ticketTypes.delete');
+Route::any('/ticketTypes/create',[ticketTypeController::class,'create'])->name('ticketTypes.create');
+Route::post('/ticketTypes/store',[ticketTypeController::class,'store'])->name('ticketTypes.store');
+Route::any('/ticketTypes/edit/{id}',[ticketTypeController::class,'edit'])->name('ticketTypes.edit');
+Route::post('/ticketTypes/update',[ticketTypeController::class,'update'])->name('ticketTypes.update');
+
+
+Route::get('/tickets',[TicketController::class,'index'])->name('tickets.index');
+Route::get('/tickets/getTicketsJson',[TicketController::class,'getTicketsJson'])->name('tickets.getTicketsJson');
+Route::any('/tickets/delete/{id}',[TicketController::class,'destroy'])->name('tickets.delete');
+Route::any('/tickets/create',[TicketController::class,'create'])->name('tickets.create');
+Route::post('/tickets/store',[TicketController::class,'store'])->name('tickets.store');
+Route::any('/tickets/edit/{id}',[TicketController::class,'edit'])->name('tickets.edit');
+Route::post('/tickets/update',[TicketController::class,'update'])->name('tickets.update');
+
+
 
 require __DIR__.'/auth.php';
