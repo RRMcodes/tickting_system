@@ -64,7 +64,7 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         },name: "sn", searchable: false ,orderable:false},
                     {data: "name", name: "name"},
-                    {data:"eventID", name:"eventID"},
+                    {data:"event_id", name:"event_id"},
                     {data:"quantity", name: "quantity"},
                     {data: "price", name: "price"},
 

@@ -72,7 +72,7 @@ class EventController extends Controller
         foreach ($request->ticket_type_name as $key=>$value){
             $obj = [
                 'name'              =>$request->ticket_type_name[$key],
-                'eventID'           =>$event->id,
+                'event_id'           =>$event->id,
                 'quantity'          =>$request->ticket_type_quantity[$key],
                 'price'             =>$request->ticket_type_price[$key],
             ];
@@ -103,7 +103,7 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = event::findOrFail($id);
-        $ticketTypes = TicketType::where('eventID',$id)->get();
+        $ticketTypes = TicketType::where('event_id',$id)->get();
         return view('events.edit')->with(compact('event','ticketTypes'));
     }
 
@@ -131,7 +131,7 @@ class EventController extends Controller
                     $obj = [
                         'id' => $request->ticket_type_id[$key],
                         'name' => $request->ticket_type_name[$key],
-                        'eventID' => $request->id,
+                        'event_id' => $request->id,
                         'quantity' => $request->ticket_type_quantity[$key],
                         'price' => $request->ticket_type_price[$key],
                     ];
@@ -142,7 +142,7 @@ class EventController extends Controller
 
                     $newObj = [
                         'name' => $request->ticket_type_name[$key],
-                        'eventID' => $request->id,
+                        'event_id' => $request->id,
                         'quantity' => $request->ticket_type_quantity[$key],
                         'price' => $request->ticket_type_price[$key],
                     ];
@@ -173,7 +173,7 @@ class EventController extends Controller
 
         }
         else{
-            $ticket_types = TicketType::where('eventID', $request->id)->get();
+            $ticket_types = TicketType::where('event_id', $request->id)->get();
             foreach ($ticket_types as $ticket_type) {
             $ticket_type->delete();
             }

@@ -62,9 +62,9 @@
 
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Event ID</label>
-                                                <input type="text" class="form-control @error('eventID') is-invalid @enderror"  name="eventID" value="{{$ticketType->eventID}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                                <input type="text" class="form-control @error('event_id') is-invalid @enderror"  name="event_id" value="{{$ticketType->event_id}}" id="exampleInputEmail1" aria-describedby="emailHelp">
 
-                                                @error('eventID')
+                                                @error('event_id')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
