@@ -51,6 +51,8 @@ Route::any('/events/create',[EventController::class,'create'])->name('events.cre
 Route::post('/events/store',[EventController::class,'store'])->name('events.store');
 Route::any('/events/edit/{id}',[EventController::class,'edit'])->name('events.edit');
 Route::post('/events/update',[EventController::class,'update'])->name('events.update');
+Route::any('/events/show/{id}',[EventController::class,'show'])->name('events.show');
+
 
 
 Route::get('/eventTypes',[EventTypeController::class,'index'])->name('eventTypes.index');
@@ -71,14 +73,8 @@ Route::any('/ticketTypes/edit/{id}',[ticketTypeController::class,'edit'])->name(
 Route::post('/ticketTypes/update',[ticketTypeController::class,'update'])->name('ticketTypes.update');
 
 
-Route::get('/tickets',[TicketController::class,'index'])->name('tickets.index');
-Route::get('/tickets/getTicketsJson',[TicketController::class,'getTicketsJson'])->name('tickets.getTicketsJson');
-Route::any('/tickets/delete/{id}',[TicketController::class,'destroy'])->name('tickets.delete');
-Route::any('/tickets/create',[TicketController::class,'create'])->name('tickets.create');
-Route::post('/tickets/store',[TicketController::class,'store'])->name('tickets.store');
-Route::any('/tickets/edit/{id}',[TicketController::class,'edit'])->name('tickets.edit');
-Route::post('/tickets/update',[TicketController::class,'update'])->name('tickets.update');
-
+Route::get('/generate-image-text', array('as'=> 'generate.image.text', 'uses' => 'ImageController@generateImageText'));
+Route::post('generate-image-text-store', array('as'=> 'generate.image.text.store', 'uses' => 'ImageController@generateImageTextStore'));
 
 
 require __DIR__.'/auth.php';

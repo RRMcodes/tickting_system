@@ -75,6 +75,7 @@
                     { data: function(data,b,c,table) {
                             var buttons = '';
                             buttons += "<a class='btn btn-sm btn-primary'  href='{{route('events.edit',array('id'=>false))}}"+"/"+data.id+"' type='button' title='Edit'><i class='fa fa-edit'></i></a>&nbsp";
+                            buttons += "<a class='btn btn-sm btn-primary'  href='{{route('events.show',array('id'=>false))}}"+"/"+data.id+"' type='button' title='Show'> Issue</a>&nbsp";
                             buttons += "<a type='button'  data-id='"+data.id+"' class='btn btn-sm btn-danger del' title='Delete' ><i class='fa fa-trash'></i></a>";
                             return buttons;
                         }, name:'action',searchable: false,orderable: false},

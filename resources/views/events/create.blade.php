@@ -142,6 +142,17 @@
                                                                                                 <span class="messages"></span>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label class="col-sm-2 col-form-label">Image</label>
+                                                                                            <div class="col-sm-10">
+                                                                                                <input type="file" class="form-control" name="ticket_type_image[]"  accept='image/*' id="image" onchange="imageUpload('image','imagePreview')" >
+                                                                                                <span class="messages"></span>
+                                                                                            </div>
+                                                                                            <div class="col-sm-10">
+                                                                                                <img   class="thumbnail" style="height: 250px;" id="imagePreview">
+                                                                                            </div>
+
+                                                                                        </div>
 
 
                                                                         <div>
@@ -185,7 +196,7 @@
         $(function (){
             $(document).on('click','#_ticket_type_add', function (e){
                 e.preventDefault();
-              var index = $('#_ticket_types_here').length + 1;
+              var index = $('#_ticket_types_here').children().length + 1;
               $('#_ticket_types_here').append(getOption(index));
             });
         });
@@ -215,9 +226,32 @@
                 '<span class="messages"></span>' +
                 '</div>' +
                 '</div>' +
+                '<div class="form-group row">' +
+                '<label class="col-sm-2 col-form-label">Image</label>' +
+                   ' <div class="col-sm-10">' +
+                        '<input type="file" class="form-control" name="ticket_type_image[]" accept="image/*" id="image'+index+'" onchange="imageUpload('+"'image"+index+"'"+','+"'imagePreview"+index+"'"+')" />' + // Refer here later
+                            '<span class="messages"></span>' +
+                    '</div>' +
+                    '<div class="col-sm-10">' +
+                        '<img   class="thumbnail" style="height: 250px;" id="imagePreview'+index+'">' +
+                    '</div>' +
+                '</div>' +
                 '<div>' +
                 '</div></li>';
             return option;
         }
+
+        function imageUpload(image,preview){
+
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById(image).files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                document.getElementById(preview).src = oFREvent.target.result;
+            };
+
+        }
+
+
     </script>
 @endsection

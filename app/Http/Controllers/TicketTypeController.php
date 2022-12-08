@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Models\TicketType;
 use Illuminate\Http\Request;
 use DataTables;
@@ -68,7 +69,6 @@ class TicketTypeController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**

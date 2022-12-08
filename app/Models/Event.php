@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
-    protected $table = 'events';
+    protected $table = 'tbl_events';
     protected $fillable = [
         'id',
+        'name',
         'type',
         'start_date',
         'end_date',

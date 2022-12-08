@@ -110,11 +110,11 @@
                                                                     <ul id="_ticket_types_here">
                                                                         <a class="btn btn-primary btn-add-task waves-effect waves-light m-t-10" href="#" id="_ticket_type_add"><i class="icofont icofont-plus"></i> Add Ticket type</a>
 
-                                                                        @foreach ($ticketTypes as $ticketType)
-                                                                        <li id="_ticket_type1">
-                                                                            <input type="hidden" name="ticket_type_id[]" value="{{$ticketType->id}}">
+                                                                        @foreach ($ticketTypes as $key=> $ticketType)
+                                                                        <li id='_ticket_type{{$key+1}}' >
+                                                                            <input type="hidden" name="ticket_type_id[{{$key+1}}]" value="{{$ticketType->id}}">
 
-                                                                            <a href="#" class="_delete_item" data-rem="#_ticket_type1">
+                                                                            <a href="#" class="_delete_item" data-rem="#_ticket_type{{$key+1}}">
                                                                                 <i class="icofont icofont-ui-delete delete_todo"></i>
                                                                             </a>
                                                                             <br>
@@ -122,25 +122,38 @@
                                                                             <div class="form-group row">
                                                                                 <label class="col-sm-2 col-form-label">Ticket Name</label>
                                                                                 <div class="col-sm-10">
-                                                                                    <input type="text" class="form-control" name="ticket_type_name[]" value="{{$ticketType->name}}" placeholder="Text Input Validation">
+                                                                                    <input type="text" class="form-control" name="ticket_type_name[{{$key+1}}]" value="{{$ticketType->name}}" placeholder="Text Input Validation">
                                                                                     <span class="messages"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group row">
                                                                                 <label class="col-sm-2 col-form-label">Ticket Price</label>
                                                                                 <div class="col-sm-10">
-                                                                                    <input type="number" class="form-control" name="ticket_type_price[]" value="{{$ticketType->price}}">
+                                                                                    <input type="number" class="form-control" name="ticket_type_price[{{$key+1}}]" value="{{$ticketType->price}}">
                                                                                     <span class="messages"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group row">
                                                                                 <label class="col-sm-2 col-form-label">Ticket Quantity</label>
                                                                                 <div class="col-sm-10">
-                                                                                    <input type="text" class="form-control" name="ticket_type_quantity[]" value="{{$ticketType->quantity}}">
+                                                                                    <input type="text" class="form-control" name="ticket_type_quantity[{{$key+1}}]" value="{{$ticketType->quantity}}">
                                                                                     <span class="messages"></span>
                                                                                 </div>
                                                                             </div>
 
+                                                                            <div class="form-group row">
+                                                                                <label class="col-sm-2 col-form-label">Image</label>
+
+                                                                                <div class="col-sm-10">
+                                                                                    <input type="file" class="form-control" name="ticket_type_image[{{$key+1}}]"  accept='image/*' id="image{{$key+1}}" onchange="imageUpload('image{{$key+1}}','imagePreview{{$key+1}}')" >
+                                                                                    <span class="messages"></span>
+                                                                                </div>
+                                                                                <div class="col-sm-10">
+                                                                                    <img src="{{ asset('storage/images/'.$ticketType->image) }}"  class="thumbnail" style="height: 250px;" id="imagePreview{{$key+1}}">
+
+                                                                                </div>
+
+                                                                            </div>
 
                                                                             <div>
 
@@ -181,7 +194,7 @@
         $(function (){
             $(document).on('click','#_ticket_type_add', function (e){
                 e.preventDefault();
-                var index = $('#_ticket_types_here').length + 1;
+                var index = $('#_ticket_types_here').children().length + 1;
                 $('#_ticket_types_here').append(getOption(index));
             });
         });
@@ -193,27 +206,47 @@
                 '<div class="form-group row">' +
                 '<label class="col-sm-2 col-form-label">Ticket Name</label>' +
                 '<div class="col-sm-10">' +
-                '<input type="text" class="form-control" name="ticket_type_name[]"  placeholder="Text Input Validation">' +
+                '<input type="text" class="form-control" name="ticket_type_name['+index+']"  placeholder="Text Input Validation">' +
                 '<span class="messages"></span>' +
                 '</div>' +
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label class="col-sm-2 col-form-label">Ticket Price</label>' +
                 '<div class="col-sm-10">' +
-                '<input type="number" class="form-control" name="ticket_type_price[]" >' +
+                '<input type="number" class="form-control" name="ticket_type_price['+index+']" >' +
                 '<span class="messages"></span>' +
                 '</div>' +
                 ' </div>' +
                 '<div class="form-group row">' +
                 '<label class="col-sm-2 col-form-label">Ticket Quantity</label>' +
                 '<div class="col-sm-10">' +
-                '<input type="text" class="form-control" name="ticket_type_quantity[]" >' +
+                '<input type="text" class="form-control" name="ticket_type_quantity['+index+']" >' +
                 '<span class="messages"></span>' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group row">' +
+                '<label class="col-sm-2 col-form-label">Image</label>' +
+                ' <div class="col-sm-10">' +
+                '<input type="file" class="form-control" name="ticket_type_image['+index+']" accept="image/*" id="image'+index+'" onchange="imageUpload('+"'image"+index+"'"+','+"'imagePreview"+index+"'"+')" />' + // Refer here later
+                '<span class="messages"></span>' +
+                '</div>' +
+                '<div class="col-sm-10">' +
+                '<img   class="thumbnail" style="height: 250px;" id="imagePreview'+index+'">' +
                 '</div>' +
                 '</div>' +
                 '<div>' +
                 '</div></li>';
             return option;
+        }
+
+
+        function imageUpload(image,preview){
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById(image).files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                document.getElementById(preview).src = oFREvent.target.result;
+            };
         }
 
     </script>

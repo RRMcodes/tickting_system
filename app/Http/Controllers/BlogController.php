@@ -59,7 +59,7 @@ class BlogController extends Controller
 //        $request->image_name->move(public_path('images'), $imageName);
 
          //Store in Storage Folder
-         $request->image_name->move('storage/images', $imageName);
+        $request->image_name->move(public_path('images'), $imageName);
 
         // // Store in S3
         // $request->image->storeAs('images', $imageName, 's3');

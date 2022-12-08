@@ -7,7 +7,10 @@ use App\Models\EventType;
 use App\Models\TicketType;
 use App\Http\Controllers\TicketTypeController;
 use DataTables;
+use Illuminate\Support\Facades\Storage;
 use Session;
+use Image;
+use Str;
 use Illuminate\Http\Request;
 
 
@@ -28,7 +31,6 @@ class EventController extends Controller
     public function getEventsJson(Request $request) {
 
         $event = event::query();
-
         return DataTables::of($event)->toJson();
     }
 
@@ -60,25 +62,66 @@ class EventController extends Controller
             'quantity' => 'required'
         ]);
 
+
+
+        $ticket_type_image_collection = [];
+
+
+        // image store
+        if ( $request->hasFile('ticket_type_image')) {
+
+            $newFiles = $request->file('ticket_type_image');
+
+            foreach ($newFiles as $key=>$newFile) {
+                $imageName  = Str::random().$key.'.'.$newFile->getClientOriginalExtension();
+                $image = $newFile->getClientOriginalName();
+                $newFile->move('storage/images/',$imageName);
+                array_push($ticket_type_image_collection, $imageName);
+            }
+
+        }
+
+
         $event = Event::create([
-            'type'              =>$request->type,
-            'start_date'        =>$request->start_date,
-            'end_date'          =>$request->end_date,
-            'details'           =>$request->details,
-            'quantity'          =>$request->quantity,
+            'type' => $request->type,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'details' => $request->details,
+            'quantity' => $request->quantity,
         ]);
 
+
+
+//        create ticket type
         $ticket_type_collection = [];
-        foreach ($request->ticket_type_name as $key=>$value){
-            $obj = [
-                'name'              =>$request->ticket_type_name[$key],
-                'event_id'           =>$event->id,
-                'quantity'          =>$request->ticket_type_quantity[$key],
-                'price'             =>$request->ticket_type_price[$key],
-            ];
-            array_push($ticket_type_collection,$obj);
+
+        if (isset($request->ticket_type_name)) {
+            foreach ($request->ticket_type_name as $key => $value) {
+                $obj = [
+                    'name'      => $request->ticket_type_name[$key],
+                    'event_id'  => $event->id,
+                    'quantity'  => $request->ticket_type_quantity[$key],
+                    'price'     => $request->ticket_type_price[$key],
+                    'image'     => $ticket_type_image_collection[$key],
+                ];
+
+
+//                if($request->ticket_type_image[$key]){
+//                    $file =$request->ticket_type_image[$key];
+//                    $file_name = time().'_'.$file->getClientOriginalName();
+//                    $img = Image::make($file);
+//                    $img->save(config('images.event.ticket'.$file_name));
+//                    $obj['image'] = $file_name;
+
+//                }
+                array_push($ticket_type_collection, $obj);
+            }
         }
+
+
+
         TicketType::insert($ticket_type_collection);
+
         Session::flash('message',config("message.messages.created"));
         return redirect()->route('events.index');
     }
@@ -91,7 +134,10 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $ticketTypes = TicketType::where('event_id',$id)->get();
+        $event = Event::findOrFail($id);
+        $eventTypes = EventType::findOrFail($event->type);
+        return view('events.show')->with(compact('ticketTypes', 'event', 'eventTypes'));
     }
 
     /**
@@ -117,13 +163,33 @@ class EventController extends Controller
     public function update(Request $request)
     {
         $event = event::find($request->id);
-        $data = $request->except(['_token','ticket_type_name','ticket_type_quantity','ticket_type_price']);
+        $data = $request->except(['_token','ticket_type_name','ticket_type_quantity','ticket_type_price','ticket_type_image']);
 
         $ticket_type_collection = [];
         $new_ticket_type_collection = [];
+        $ticket_type_image_collection = [];
+
 
         if (isset($request->ticket_type_name)) {
 
+            if ( $request->hasFile('ticket_type_image')) {
+
+                $newFiles = $request->file('ticket_type_image');
+
+                foreach ($newFiles as $key=>$newFile) {
+                    if (Storage::exists($newFile)) {
+
+                    }
+                    else {
+                        $imageName  = Str::random().$key.'.'.$newFile->getClientOriginalExtension();
+                        $image = $newFile->getClientOriginalName();
+                        $newFile->move('storage/images/',$imageName);
+                        $ticket_type_image_collection[$key] = $imageName;
+
+                    }
+                }
+
+            }
 
             foreach ($request->ticket_type_name as $key => $value) {
                 if (isset($request->ticket_type_id[$key])) {
@@ -135,10 +201,10 @@ class EventController extends Controller
                         'quantity' => $request->ticket_type_quantity[$key],
                         'price' => $request->ticket_type_price[$key],
                     ];
+                    (isset($ticket_type_image_collection[$key]))? $obj['image']= $ticket_type_image_collection[$key]:false;
                     array_push($ticket_type_collection, $obj);
 
-                }
-                else{
+                } else {
 
                     $newObj = [
                         'name' => $request->ticket_type_name[$key],
@@ -146,30 +212,29 @@ class EventController extends Controller
                         'quantity' => $request->ticket_type_quantity[$key],
                         'price' => $request->ticket_type_price[$key],
                     ];
+                    (isset($ticket_type_image_collection[$key]))? $obj['image']= $ticket_type_image_collection[$key]:false;
                     array_push($new_ticket_type_collection, $newObj);
 
                 }
             }
 
 
+
             foreach ($ticket_type_collection as $ticket_type) {
 
-                    TicketType::where('id', $ticket_type['id'])
-                        ->update(['name' => $ticket_type['name'],
-                            'quantity' => $ticket_type['quantity'],
-                            'price' => $ticket_type['price']
-                        ]);
+                TicketType::where('id', $ticket_type['id'])
+                    ->update($ticket_type);
             }
 
-            foreach ($new_ticket_type_collection as $new_ticket_type) {
-
+//            foreach ($new_ticket_type_collection as $new_ticket_type) {
+//
 //                (['name' => $new_ticket_type['name'],
 //                    'quantity' => $new_ticket_type['quantity'],
 //                    'price' => $new_ticket_type['price']
 //                ]);
+//            }
+            TicketType::insert($new_ticket_type_collection);
 
-                TicketType::insert($new_ticket_type_collection);
-            }
 
         }
         else{
@@ -195,6 +260,9 @@ class EventController extends Controller
     {
         $event = event::findOrFail($id);
         $event->delete();
+        $ticket_types = TicketType::where('event_id', $id)->get();
+        $ticket_types->delete();
+
         return response()->json([
             'success'=> true,
             'message'=> config("message.messages.deleted"),

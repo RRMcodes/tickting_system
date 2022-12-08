@@ -54,7 +54,6 @@ class EventTypeController extends Controller
 
         ]);
         $eventType = $request->except(['_token']);
-//        dd($event);
         EventType::create($eventType);
         Session::flash('message',config("message.messages.created"));
         return redirect()->route('eventTypes.index');
