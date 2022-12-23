@@ -12,6 +12,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">
+
                                     <div class="card-header">
                                         <h2>{{$event->name}}</h2>
                                     </div>
@@ -35,6 +36,10 @@
                                         <h4>Event Details</h4>
                                         <p>{{$event->details}}</p>
                                     </div>
+
+                                    <a type="submit" href="{{route('events.storeTickets', ['id' => $event->id])}}" class="btn btn-primary"  style="display: inline;float: right">issue all tickets</a>
+
+
                                 </div>
 
                                 <h2>Tickets</h2>
@@ -42,9 +47,17 @@
 
 
                                     <div class="card">
+
                                         <div class="card-header">
-                                            <h3>{{$ticketType->name}}</h3>
-                                            <p></p>
+                                            <h3 style="display: inline; float: left">{{$ticketType->name}}</h3>
+
+                                            <div class="form-check" style="display: inline;float: left;font-size: large; margin-left: 30px">
+                                                <input style="height: 20px; " class="form-check-input"  type="checkbox" value="{{$ticketType->id}}" id="defaultCheck1">
+                                                <label class="form-check-label" for="defaultCheck1">
+                                                    Select
+                                                </label>
+                                            </div>
+
                                         </div>
 
                                         <div class="card-block">
@@ -55,7 +68,7 @@
 
                                                 <h4>Ticket Quantity</h4>
                                                 <p>{{$ticketType->quantity}}</p>
-                                            <button type="submit" class="btn btn-primary">issue</button>
+                                            <button  type="submit" href="{{route('events.storeTickets', ['id' => $ticketType->id, 'eventID' => $event->id])}}" class="btn btn-primary">issue</button>
                                         </div>
                                     </div>
 
@@ -69,4 +82,16 @@
             </div>
         </div>
     </div>
+
+    <script>
+
+        function select () {
+            var chkbox = document.getElementsByClassName('form-check-input');
+            for (var i = 0; i < chkbox.length; i++) {
+                if (chkbox[i].type == 'checkbox')
+                    chkbox[i].checked = true;
+            }
+        }
+
+    </script>
 @endsection()

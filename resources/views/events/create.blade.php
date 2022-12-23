@@ -49,6 +49,16 @@
                                     <div class="card-body">
                                         <form action="{{route('events.store')}}" method="POST" enctype="multipart/form-data">
                                             {{csrf_field()}}
+
+                                            <div class="mb-3">
+                                                <label for="exampleInputEmail1" class="form-label">Event name</label>
+                                                <input type="text" class="form-control @error('name') is-invalid @enderror " name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+                                                @error('name')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Type</label>
                                                 <div class="form-group">

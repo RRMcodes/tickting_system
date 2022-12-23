@@ -6,7 +6,6 @@ use \App\HTTP\Controllers\BlogController;
 use \App\HTTP\Controllers\EventController;
 use \App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\TicketTypeController;
-use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +51,9 @@ Route::post('/events/store',[EventController::class,'store'])->name('events.stor
 Route::any('/events/edit/{id}',[EventController::class,'edit'])->name('events.edit');
 Route::post('/events/update',[EventController::class,'update'])->name('events.update');
 Route::any('/events/show/{id}',[EventController::class,'show'])->name('events.show');
-
+Route::any('/events/storeTickets/{id}',[EventController::class,'storeTickets'])->name('events.storeTickets');
+Route::any('/events/filterTickets',[EventController::class,'filterTickets'])->name('events.filterTickets');
+Route::any('/events/filter/{id}',[EventController::class,'filter'])->name('event.type.filter');
 
 
 Route::get('/eventTypes',[EventTypeController::class,'index'])->name('eventTypes.index');
@@ -73,8 +74,6 @@ Route::any('/ticketTypes/edit/{id}',[ticketTypeController::class,'edit'])->name(
 Route::post('/ticketTypes/update',[ticketTypeController::class,'update'])->name('ticketTypes.update');
 
 
-Route::get('/generate-image-text', array('as'=> 'generate.image.text', 'uses' => 'ImageController@generateImageText'));
-Route::post('generate-image-text-store', array('as'=> 'generate.image.text.store', 'uses' => 'ImageController@generateImageTextStore'));
 
 
 require __DIR__.'/auth.php';

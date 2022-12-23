@@ -29,6 +29,7 @@
                                                     <thead>
                                                     <tr>
                                                         <td>Sno</td>
+                                                        <td>Name</td>
                                                         <td>type</td>
                                                         <td>start date</td>
                                                         <td>end date</td>
@@ -65,6 +66,7 @@
                     { data: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         },name: "sn", searchable: false ,orderable:false},
+                    {data:"name", name:"name"},
                     {data: "type", name: "type"},
                     {data: "start_date", name: "start_date"},
                     {data: "end_date", name: "end_date"},

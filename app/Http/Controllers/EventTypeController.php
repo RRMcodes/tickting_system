@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Models\eventType;
-use DataTables;
 use Session;
+use DataTables;
 
 class EventTypeController extends Controller
 {
@@ -87,7 +87,7 @@ class EventTypeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
@@ -102,7 +102,7 @@ class EventTypeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -113,4 +113,5 @@ class EventTypeController extends Controller
             'message'=> config("message.messages.deleted"),
         ]);
     }
+
 }

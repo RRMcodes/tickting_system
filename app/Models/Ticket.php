@@ -23,4 +23,5 @@ class Ticket extends Model
         'end_date',
 
 ];
+
 }

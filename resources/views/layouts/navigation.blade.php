@@ -3,29 +3,29 @@
         <div class="pcoded-inner-navbar main-menu">
             <div class="pcoded-navigation-label">Navigation</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="pcoded-hasmenu pcoded-trigger active">
+                <li class="pcoded-hasmenu pcoded-trigger {{ ( (Route::currentRouteName() === 'items.index' || 'blogs.index' || 'eventTypes.index' || 'ticketTypes.index') ? 'active' : '' ) }}">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                         <span class="pcoded-mtext">Dashboard</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li class="{{ ( (Route::currentRouteName() == 'items.index') ? 'active' : '' ) }}">
+                        <li class="{{ ( (Route::currentRouteName() === 'items.index') ? 'active' : '' ) }}">
                             <a href="{{route('items.index')}}" class="waves-effect waves-dark ">
                                 <span class="pcoded-mtext">Items</span>
                             </a>
                         </li>
-                        <li class="{{ ( (Route::currentRouteName() == 'blogs.index') ? 'active' : '' ) }}">
+                        <li class="{{ ( (Route::currentRouteName() === 'blogs.index') ? 'active' : '' ) }}">
                             <a href="{{route('blogs.index')}}" class="waves-effect waves-dark ">
                                 <span class="pcoded-mtext">Blogs</span>
                             </a>
                         </li>
-                        <li class="{{ ( (Route::currentRouteName() == 'eventTypes.index') ? 'active' : '' ) }}">
+                        <li class="{{ ( (Route::currentRouteName() === 'eventTypes.index') ? 'active' : '' ) }}">
                             <a href="{{route('eventTypes.index')}}" class="waves-effect waves-dark ">
                                 <span class="pcoded-mtext">Event Type</span>
                             </a>
                         </li>
 
-                        <li class="{{ ( (Route::currentRouteName() == 'ticketTypes.index') ? 'active' : '' ) }}">
+                        <li class="{{ ( (Route::currentRouteName() === 'ticketTypes.index') ? 'active' : '' ) }}">
                             <a href="{{route('ticketTypes.index')}}" class="waves-effect waves-dark ">
                                 <span class="pcoded-mtext">Ticket Type</span>
                             </a>
@@ -34,14 +34,22 @@
                     </ul>
                 </li>
 
-                <li class="{{ ( (Route::currentRouteName() == 'events.index') ? 'active' : '' ) }}">
+                <li class="{{ ( (Route::currentRouteName() === 'events.index') ? 'active' : '' ) }}">
                     <a href="{{route('events.index')}}" class="waves-effect waves-dark ">
- <span class="pcoded-micon">
- <i class="feather icon-menu"></i>
- </span>
+                        <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
                         <span  class="pcoded-mtext">Events</span>
                     </a>
                 </li>
+
+                <li class="{{ ( (Route::currentRouteName() === 'event.type.filter') ? 'active' : '' ) }}">
+                    <a href="{{route('events.filterTickets')}}" class="waves-effect waves-dark ">
+                        <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
+                        <span class="pcoded-mtext">View Tickets</span>
+                    </a>
+                </li>
+
+
+
 
                 <li class="pcoded-hasmenu">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -114,9 +122,9 @@
 
                 <li class="pcoded-hasmenu">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
- <span class="pcoded-micon">
- <i class="feather icon-layers"></i>
- </span>
+                        <span class="pcoded-micon">
+                        <i class="feather icon-layers"></i>
+                        </span>
                         <span class="pcoded-mtext">Widget</span>
                         <span class="pcoded-badge label label-danger">100+</span>
                     </a>

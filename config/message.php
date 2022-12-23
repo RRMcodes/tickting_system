@@ -8,6 +8,4 @@ return [
         "deleted" => "record deleted successfully",
     ],
 
-
-
 ];

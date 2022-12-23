@@ -51,6 +51,15 @@
                                             <input type="hidden" name="id" value="{{$event->id}}">
 
                                             <div class="mb-3">
+                                                <label for="exampleInputEmail1" class="form-label">Event name</label>
+                                                <input type="text" value="{{$event->name}}" class="form-control @error('name') is-invalid @enderror " name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+                                                @error('name')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Type</label>
                                                 <input type="text" value="{{$event->type}}" class="form-control @error('type') is-invalid @enderror"  name="type" id="exampleInputEmail1" aria-describedby="emailHelp">
 

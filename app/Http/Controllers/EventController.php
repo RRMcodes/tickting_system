@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\EventType;
+use App\Models\Ticket;
 use App\Models\TicketType;
 use App\Http\Controllers\TicketTypeController;
 use DataTables;
@@ -63,7 +64,6 @@ class EventController extends Controller
         ]);
 
 
-
         $ticket_type_image_collection = [];
 
 
@@ -83,6 +83,7 @@ class EventController extends Controller
 
 
         $event = Event::create([
+            'name' => $request->name,
             'type' => $request->type,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -124,6 +125,50 @@ class EventController extends Controller
 
         Session::flash('message',config("message.messages.created"));
         return redirect()->route('events.index');
+    }
+
+
+    public function storeTickets ($id)
+    {
+        $ticket_types = TicketType::where('event_id', $id)->get();
+        $event = Event::findOrFail($id);
+        $ticket_collection = [];
+
+
+
+            foreach ($ticket_types as $ticketType) {
+
+                 for ($x = 0; $x < $ticketType->quantity; $x++) {
+
+                    $num = strval($event->id);
+                    $num .= strval($ticketType->id);
+                    $num .= Str::length($ticketType->name);
+
+                    $obj = [
+
+                        'ticket_type_id' => $ticketType->id,
+                        'event_id' => $event->id,
+                        'ticket_number' => Str::random(),
+                        'ticket_image' => $ticketType->image,
+                        'price' => $ticketType->price,
+                        'start_date' => $event->start_date,
+                        'end_date' => $event->end_date,
+                    ];
+
+                    array_push($ticket_collection, $obj);
+                }
+
+            }
+
+            $chunks = array_chunk($ticket_collection,1000);
+
+
+            foreach ($chunks as $chunk) {
+            Ticket::insert($chunk);
+            }
+
+        return redirect()->route('events.index');
+
     }
 
     /**
@@ -268,4 +313,28 @@ class EventController extends Controller
             'message'=> config("message.messages.deleted"),
         ]);
     }
+
+
+    public function filterTickets(Request $request) {
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            $events = Event::where('deleted_at',null)->get();
+            return view('ticket.form')->with(compact('events'));
+        }else{
+            $query = Ticket::where('ticket_type',$request->ticket_type)
+                ->where('',$request->event_type);
+
+        }
+    }
+
+    public function filter(Request $request){
+        $event = Event::find($request->route('id'));
+        return response()->json([
+            'success'   =>true,
+            'ticketType'=>$event->ticketType()->get()
+        ]);
+    }
+
+
+
+
 }
