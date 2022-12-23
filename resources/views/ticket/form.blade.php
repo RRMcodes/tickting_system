@@ -52,7 +52,7 @@
 
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Event </label>
-                                               <select class="select2 form-control" id="events" name="events">
+                                               <select class="select2 form-control" id="event" name="event">
                                                    <option value="">-- Select an Option --</option>
                                                    @foreach($events as $key=>$value)
                                                        <option value="{{$value->id}}">{{ucfirst(strtolower($value->name))}}</option>
@@ -60,14 +60,14 @@
                                                </select>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="exampleInputEmail1" class="form-label">Type</label>
+                                                <label for="exampleInputEmail1" class="form-label">Ticket Type</label>
                                                 <div class="form-group">
-                                                    <select class="form-control" name="eventType" id="eventType">
+                                                    <select class="form-control" name="ticketType" id="ticketType">
 
                                                     </select>
                                                 </div>
 
-                                                @error('eventType')
+                                                @error('ticketType')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -95,10 +95,10 @@
                 let eventFilter = (id) =>{
                     $.get('{{route('event.type.filter',['id'=>false])}}'+'/'+id).then((data)=>{
                         console.log(data);
-                        $('#eventType').empty();
+                        $('#ticketType').empty();
 
                         $.each(data.ticketType, function(key, value) {
-                            $('#eventType').append(`<option value="`+value.id+`">`+value.name+`</option>`);
+                            $('#ticketType').append(`<option value="`+value.id+`">`+value.name+`</option>`);
                         });
                     });
                 };
@@ -113,7 +113,7 @@
                 {{--    });--}}
                 {{--}--}}
 
-                $('#events').on('change',function (event){
+                $('#event').on('change',function (event){
                     let id = $(this).val();
                     eventFilter(id);
                 });

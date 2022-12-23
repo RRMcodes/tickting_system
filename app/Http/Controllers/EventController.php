@@ -320,8 +320,9 @@ class EventController extends Controller
             $events = Event::where('deleted_at',null)->get();
             return view('ticket.form')->with(compact('events'));
         }else{
+            dd($request);
             $query = Ticket::where('ticket_type',$request->ticket_type)
-                ->where('',$request->event_type);
+                ->where('',$request->event);
 
         }
     }
