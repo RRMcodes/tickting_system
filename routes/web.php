@@ -53,7 +53,9 @@ Route::post('/events/update',[EventController::class,'update'])->name('events.up
 Route::any('/events/show/{id}',[EventController::class,'show'])->name('events.show');
 Route::any('/events/storeTickets/{id}',[EventController::class,'storeTickets'])->name('events.storeTickets');
 Route::any('/events/filterTickets',[EventController::class,'filterTickets'])->name('events.filterTickets');
-Route::any('/events/filter/{id}',[EventController::class,'filter'])->name('event.type.filter');
+Route::any('/events/filter/{id}',[EventController::class,'filter'])->name('events.filter');
+Route::any('/events/getTicketsJson',[EventController::class,'getTicketsJson'])->name('events.getTicketsJson');
+
 
 
 Route::get('/eventTypes',[EventTypeController::class,'index'])->name('eventTypes.index');
@@ -77,3 +79,11 @@ Route::post('/ticketTypes/update',[ticketTypeController::class,'update'])->name(
 
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

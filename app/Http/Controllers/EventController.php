@@ -320,10 +320,8 @@ class EventController extends Controller
             $events = Event::where('deleted_at',null)->get();
             return view('ticket.form')->with(compact('events'));
         }else{
-            dd($request);
-            $query = Ticket::where('ticket_type',$request->ticket_type)
-                ->where('',$request->event);
-
+            $query = Ticket::where('ticket_type_id',$request->ticketType)
+                ->where('event_id',$request->event)->get();
         }
     }
 
@@ -335,7 +333,10 @@ class EventController extends Controller
         ]);
     }
 
-
-
+    public function getTicketsJson(Request $request) {
+        $ticket = ticket::where('event_id',$request->event)
+        ->where('ticket_type_id',$request->ticketType);
+        return DataTables::of($ticket)->toJson();
+    }
 
 }
